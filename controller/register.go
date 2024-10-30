@@ -37,6 +37,7 @@ func GetSmscd(ctx *gin.Context) {
 	rsp, err := cli.SendSms(context.TODO(), &register.CallRequest{Uuid: uuid, CapCode: capCode, Phone: phone})
 	if err != nil {
 		fmt.Println("rpc:getSendSms err :", err)
+		ctx.JSON(http.StatusOK, rsp)
 		return
 	}
 	ctx.JSON(http.StatusOK, rsp)

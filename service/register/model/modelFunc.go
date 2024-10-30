@@ -18,7 +18,15 @@ func InitRedis() {
 		MaxConnLifetime: 300 * time.Second,
 		IdleTimeout:     30 * time.Second,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", "192.168.101.45:6379")
+			conn, err := redis.Dial("tcp", "192.168.101.45:6379")
+			if err != nil {
+				return nil, err
+			}
+			if _, err = conn.Do("AUTH", "123"); err != nil {
+				conn.Close()
+				return nil, err
+			}
+			return conn, nil
 		},
 	}
 }
